@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 0 0% 100%;
+    --surface: 0 0% 99%;
+    --surface-2: 220 14% 96%;
+    --border: 220 13% 91%;
+    --fg: 224 71% 4%;
+    --muted: 220 9% 46%;
+    --accent: 222 47% 11%;
+    --accent-fg: 0 0% 100%;
+    --danger: 0 72% 51%;
+    --success: 142 71% 45%;
+  }
+
+  .dark {
+    --bg: 224 71% 4%;
+    --surface: 224 50% 7%;
+    --surface-2: 220 30% 12%;
+    --border: 220 20% 18%;
+    --fg: 0 0% 98%;
+    --muted: 220 14% 65%;
+    --accent: 0 0% 98%;
+    --accent-fg: 222 47% 11%;
+    --danger: 0 72% 60%;
+    --success: 142 71% 50%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+}
+
+@layer utilities {
+  .container-content {
+    @apply mx-auto w-full max-w-content px-6;
+  }
+
+  .ease-apple {
+    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  }
+}
