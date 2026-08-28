@@ -22,6 +22,7 @@
     "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
+    "react-dropzone": "^20.1.1",
     "react-hook-form": "^7.86.0",
     "zod": "^3.25.76",
     "zustand": "^5.0.15"
