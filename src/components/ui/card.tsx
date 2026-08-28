@@ -1,46 +1,28 @@
-import * as React from 'react';
-import { cn } from '@/lib/utils';
+"use client";
 
-export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('rounded-xl border border-border bg-surface text-fg', className)}
-      {...props}
-    />
-  ),
-);
-Card.displayName = 'Card';
+import { type ReactNode } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
-  ),
-);
-CardHeader.displayName = 'CardHeader';
+interface CardProps {
+  hover?: boolean;
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
 
-export const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  ({ className, ...props }, ref) => (
-    <h3 ref={ref} className={cn('text-lg font-semibold leading-none tracking-tight', className)} {...props} />
-  ),
-);
-CardTitle.displayName = 'CardTitle';
-
-export const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-muted', className)} {...props} />
-  ),
-);
-CardDescription.displayName = 'CardDescription';
-
-export const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />,
-);
-CardContent.displayName = 'CardContent';
-
-export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />
-  ),
-);
-CardFooter.displayName = 'CardFooter';
+export function Card({ hover, className, children, ...props }: CardProps) {
+  return (
+    <motion.div
+      whileHover={hover ? { y: -2, scale: 1.01 } : undefined}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      className={cn(
+        "bg-bg-elevated rounded-card shadow-sm overflow-hidden",
+        className
+      )}
+      onClick={props.onClick}
+    >
+      {children}
+    </motion.div>
+  );
+}

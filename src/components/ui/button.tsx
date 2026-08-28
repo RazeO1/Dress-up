@@ -1,44 +1,66 @@
-import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+"use client";
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded font-medium transition-all duration-200 ease-apple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        primary: 'bg-fg text-bg hover:opacity-90 active:scale-[0.98]',
-        secondary: 'bg-surface-2 text-fg hover:bg-surface-2/70 active:scale-[0.98]',
-        ghost: 'text-fg hover:bg-surface-2',
-        outline: 'border border-border bg-bg hover:bg-surface-2',
-        destructive: 'bg-danger text-white hover:bg-danger/90 active:scale-[0.98]',
-        link: 'text-fg underline-offset-4 hover:underline',
-      },
-      size: {
-        sm: 'h-8 px-3 text-sm',
-        md: 'h-10 px-4 text-sm',
-        lg: 'h-11 px-6 text-[15px]',
-        xl: 'h-12 px-7 text-base',
-        icon: 'h-10 w-10',
-      },
-    },
-    defaultVariants: { variant: 'primary', size: 'md' },
-  },
-);
+import { type ReactNode, type MouseEventHandler } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
+type Variant = "primary" | "secondary" | "ghost" | "danger";
+type Size = "sm" | "md" | "lg";
+
+interface ButtonProps {
+  variant?: Variant;
+  size?: Size;
+  fullWidth?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  children: ReactNode;
+  ariaLabel?: string;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
-  },
-);
-Button.displayName = 'Button';
+const variantStyles: Record<Variant, string> = {
+  primary: "bg-accent text-white hover:bg-accent-hover",
+  secondary: "bg-bg-secondary text-text-primary hover:bg-bg-tertiary",
+  ghost: "bg-transparent text-text-primary hover:bg-bg-secondary",
+  danger: "bg-red-500 text-white hover:bg-red-600",
+};
 
-export { Button, buttonVariants };
+const sizeStyles: Record<Size, string> = {
+  sm: "px-3 py-1.5 text-sm rounded-[10px]",
+  md: "px-5 py-3 text-base rounded-btn",
+  lg: "px-6 py-4 text-lg rounded-btn",
+};
+
+export function Button({
+  variant = "primary",
+  size = "md",
+  fullWidth,
+  className,
+  children,
+  onClick,
+  disabled,
+  type = "button",
+  ariaLabel,
+}: ButtonProps) {
+  return (
+    <motion.button
+      whileTap={{ scale: 0.96 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+      aria-label={ariaLabel}
+      className={cn(
+        "font-semibold transition-colors select-none disabled:opacity-50 disabled:cursor-not-allowed",
+        variantStyles[variant],
+        sizeStyles[size],
+        fullWidth && "w-full",
+        className
+      )}
+    >
+      {children}
+    </motion.button>
+  );
+}

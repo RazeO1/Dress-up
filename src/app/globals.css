@@ -2,55 +2,121 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --bg: 0 0% 100%;
-    --surface: 0 0% 99%;
-    --surface-2: 220 14% 96%;
-    --border: 220 13% 91%;
-    --fg: 224 71% 4%;
-    --muted: 220 9% 46%;
-    --accent: 222 47% 11%;
-    --accent-fg: 0 0% 100%;
-    --danger: 0 72% 51%;
-    --success: 142 71% 45%;
-  }
+:root {
+  /* Light theme */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f2f2f7;
+  --bg-tertiary: #e5e5ea;
+  --bg-elevated: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #3c3c43;
+  --text-tertiary: #8e8e93;
+  --accent: #007aff;
+  --accent-hover: #0051d5;
+  --border: rgba(60, 60, 67, 0.12);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+  --backdrop: rgba(255, 255, 255, 0.7);
+}
 
-  .dark {
-    --bg: 224 71% 4%;
-    --surface: 224 50% 7%;
-    --surface-2: 220 30% 12%;
-    --border: 220 20% 18%;
-    --fg: 0 0% 98%;
-    --muted: 220 14% 65%;
-    --accent: 0 0% 98%;
-    --accent-fg: 222 47% 11%;
-    --danger: 0 72% 60%;
-    --success: 142 71% 50%;
-  }
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --bg-secondary: #1c1c1e;
+  --bg-tertiary: #2c2c2e;
+  --bg-elevated: #1c1c1e;
+  --text-primary: #ffffff;
+  --text-secondary: #ebebf5;
+  --text-tertiary: #8e8e93;
+  --accent: #0a84ff;
+  --accent-hover: #409cff;
+  --border: rgba(255, 255, 255, 0.12);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --backdrop: rgba(0, 0, 0, 0.7);
+}
 
-  * {
-    @apply border-border;
-  }
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Display",
+    "SF Pro Text", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
 
-  body {
-    @apply bg-bg text-fg font-sans;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
-  }
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.5;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
 }
 
 @layer utilities {
-  .container-content {
-    @apply mx-auto w-full max-w-content px-6;
+  .text-balance {
+    text-wrap: balance;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
 
-  .ease-apple {
-    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
-  }
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 25%,
+    var(--bg-tertiary) 50%,
+    var(--bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
 }

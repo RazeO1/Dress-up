@@ -1,26 +1,24 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Toaster } from '@/components/ui/toaster';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-});
+import type { Metadata } from "next";
+import "./globals.css";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
-  title: 'Wardrobe — Your private wardrobe, online',
-  description:
-    'Every piece you own, beautifully organized. Private by default. Built for one person at a time.',
+  title: "Wardrobe",
+  description: "Your virtual wardrobe app",
+  icons: {
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>",
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body className="font-sans">
-        {children}
-        <Toaster />
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
