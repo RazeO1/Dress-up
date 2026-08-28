@@ -1,6 +1,15 @@
 import { create } from "zustand";
 import type { Item, BlendMode } from "@/types";
 
+export interface CanvasItemState {
+  item: Item;
+  x: number;
+  y: number;
+  scale: number;
+  rotation: number;
+  zIndex: number;
+}
+
 interface CanvasItem {
   item: Item;
   x: number;
