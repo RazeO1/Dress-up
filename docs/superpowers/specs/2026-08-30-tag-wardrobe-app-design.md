@@ -17,25 +17,34 @@ TAG is a wardrobe inventory app built around the visual language of **clothing c
 ### Aesthetic Direction
 **Brutalist garment-tag.** Inspired by care labels, warehouse inventory tags, and shipping labels. Functional over decorative. Every element earns its place.
 
-### Color Palette
+### Color Palette (Sour Candy — Gen Z / youth)
+
+The brutalist structure stays — stark borders, monospace type, zero radius — but the palette shifts to high-saturation Gen Z colors: acid green primary, tangerine secondary, warm off-white background. Bright, playful, slightly unexpected.
 
 | Token | Hex | Usage |
 |---|---|---|
-| `background` | `#F2EDE4` | Aged paper — warm off-white, care-label stock |
-| `foreground` | `#0A0A0A` | Near-black ink |
-| `accent` | `#FFE500` | Hazard yellow — CTA highlights, active states, hover accents |
-| `muted` | `#E2DDD4` | Subtle dividers, card fills, inactive tabs |
-| `muted-foreground` | `#6B6560` | Secondary labels, hints |
-| `destructive` | `#D62828` | Delete actions, errors |
-| `border` | `#0A0A0A` | All borders — solid, stark, 1.5px |
-| `card` | `#F2EDE4` | Same as background, bordered |
+| `background` | `#FFF8F0` | Warm off-white, like bright paper |
+| `foreground` | `#1A1A1A` | Deep charcoal (slightly softer than pure black) |
+| `accent` | `#A8FF3E` | Acid green — primary CTA, active states, hover accents |
+| `secondary` | `#FF6B35` | Tangerine — secondary CTAs, focus rings, badges |
+| `muted` | `#F0EDE8` | Subtle dividers, card fills, inactive tabs |
+| `muted-foreground` | `#8A8A7A` | Secondary labels, hints |
+| `destructive` | `#FF3366` | Delete actions, errors |
+| `border` | `#1A1A1A` | All borders — solid, 2px (heavier for Gen Z punch) |
+| `card` | `#FFF8F0` | Same as background, bordered |
+
+**Usage rules:**
+- `accent` (acid green) is the **only** primary action color — used for the main CTA, active states, success toasts
+- `secondary` (tangerine) is for secondary actions, focus rings, badges, hover accents on secondary buttons
+- `destructive` (hot pink-red) is for delete + errors — never use `secondary` for destructive actions
+- `accent` + `secondary` should never appear next to each other in the same UI block (creates visual noise)
 
 ### Typography
 
 | Role | Font | Weight | Treatment |
 |---|---|---|---|
-| Display / Logo | `Space Mono` | 700 | ALL CAPS, tracked out |
-| Headings | `Space Mono` | 700 | Sentence case, normal tracking |
+| Display / Logo | `Syne` | 700 | ALL CAPS, tracked out — quirky geometric display |
+| Headings | `Syne` | 700 | Sentence case, normal tracking |
 | Body | `IBM Plex Mono` | 400/500 | Normal case, readable at 14px |
 | Labels / Tags | `Space Mono` | 400 | ALL CAPS, 11px, letter-spaced |
 | Data / Counts | `Space Mono` | 400 | Tabular figures, monospaced numbers |
@@ -46,7 +55,7 @@ TAG is a wardrobe inventory app built around the visual language of **clothing c
 - Section padding: `64px` vertical, `24px` horizontal (mobile: `32px` / `16px`)
 - Card padding: `12px`
 - Border radius: **0** (everywhere — no rounded corners)
-- Border width: `1.5px` solid `#0A0A0A`
+- Border width: `2px` solid `#1A1A1A` (heavier for Gen Z punch)
 - Grid gap: `16px` (mobile: `12px`)
 
 ### Motion Philosophy
@@ -54,8 +63,8 @@ TAG is a wardrobe inventory app built around the visual language of **clothing c
 Motion is **purposeful and mechanical**, not bouncy or organic.
 
 - Page transitions: fade + slight translate-y (`0 → 1 opacity`, `8px → 0 translateY`), `200ms ease-out`
-- Card hover: `border-color` shifts to `#FFE500`, `box-shadow: 4px 4px 0 #0A0A0A` — feels like a stamp landing
-- Loader: vertical stamp animation — a care-tag icon stamping down repeatedly
+- Card hover: `border-color` shifts to `#A8FF3E`, `box-shadow: 4px 4px 0 #1A1A1A` — feels like a stamp landing
+- Loader: vertical stamp animation — a care-tag icon stamping down repeatedly in acid green
 - Staggered grid reveal on load: `100ms` delay between cards, `opacity 0 → 1` + `translateY(8px → 0)`
 - No spring physics, no elastic easing — `ease-out` only
 
@@ -64,7 +73,7 @@ Motion is **purposeful and mechanical**, not bouncy or organic.
 - **Icons:** Lucide React — `strokeWidth={1.5}`, size `16px` (labels) / `20px` (nav) / `24px` (CTA)
 - **No images on landing page** — use CSS geometric shapes, borders, and typography to create visual interest
 - **Item photos:** User-uploaded, displayed in care-tag card frames
-- **Favicon:** SVG — a clothing tag shape in `#FFE500` on `#0A0A0A` background
+- **Favicon:** SVG — a clothing tag shape in `#A8FF3E` on `#1A1A1A` background
 
 ---
 
@@ -118,7 +127,7 @@ Motion is **purposeful and mechanical**, not bouncy or organic.
 
 - Full-width sections separated by `1.5px` horizontal rules
 - "03 FEATURES" / "03 CATEGORIES" — numbered section labels in `Space Mono` uppercase
-- CTA button: solid `#FFE500` background, `#0A0A0A` text, uppercase, no border-radius
+- CTA button: solid `#A8FF3E` background, `#1A1A1A` text, uppercase, no border-radius
 - Bottom: `© 2026 TAG. Built for people who actually wear their clothes.`
 
 ### Auth Pages (`/login`, `/signup`)
@@ -149,9 +158,9 @@ Motion is **purposeful and mechanical**, not bouncy or organic.
 └────────────────────┘
 ```
 
-- Centered card, max-width `400px`, `border: 1.5px solid`, no border-radius
-- Form inputs: full-width, `1.5px border`, no border-radius, uppercase labels
-- Error states: red border + error text below input
+- Centered card, max-width `400px`, `border: 2px solid`, no border-radius
+- Form inputs: full-width, `2px border`, no border-radius, uppercase labels
+- Error states: pink-red border (`#FF3366`) + error text below input
 
 ### Wardrobe Page (`/wardrobe`)
 
@@ -177,7 +186,7 @@ Motion is **purposeful and mechanical**, not bouncy or organic.
 └──────────────┴───────────────────────────────────────────┘
 ```
 
-**Desktop (>768px):** Sidebar (200px fixed) + main content area. Sidebar has category list with item counts. Grid is `auto-fill, minmax(180px, 1fr)`.
+**Desktop (>768px):** Sidebar (200px fixed) + main content area. Sidebar has category list with item counts. Grid is `auto-fill, minmax(180px, 1fr)`. Sidebar border: `2px solid #1A1A1A`.
 
 **Mobile (<768px):** No sidebar. Category filter becomes horizontal scrollable tabs at top. Grid is `1fr` (1 column) or `repeat(2, 1fr)` depending on screen width.
 
@@ -200,9 +209,9 @@ Motion is **purposeful and mechanical**, not bouncy or organic.
 └─────────────────────┘
 ```
 
-- All borders: `1.5px solid #0A0A0A`
+- All borders: `2px solid #1A1A1A`
 - Photo aspect ratio: `3:4` (portrait, like clothing on a hanger)
-- Hover state: `border-color: #FFE500`, `box-shadow: 4px 4px 0 #FFE500`
+- Hover state: `border-color: #A8FF3E`, `box-shadow: 4px 4px 0 #A8FF3E`
 - Color swatch: a `10px` filled circle in the item's color
 
 ### Add Item Modal / Sheet
@@ -306,23 +315,27 @@ Slides in from right (desktop) or bottom (mobile). Shows:
 - **States:** always animating when visible, hidden when not needed
 
 ### `<Button variant="accent" />`
-- **Default:** `background: #FFE500`, `color: #0A0A0A`, uppercase text, no border-radius
-- **Hover:** `background: #0A0A0A`, `color: #FFE500`
-- **Disabled:** `background: #E2DDD4`, `color: #6B6560`, `cursor: not-allowed`
+- **Default:** `background: #A8FF3E`, `color: #1A1A1A`, uppercase text, no border-radius
+- **Hover:** `background: #1A1A1A`, `color: #A8FF3E`
+- **Disabled:** `background: #F0EDE8`, `color: #8A8A7A`, `cursor: not-allowed`
 - **Loading:** Replaced with `<Loader inline />` + "SAVING..." text
 
+### `<Button variant="secondary" />`
+- **Default:** `background: #FF6B35`, `color: #FFF8F0`, uppercase text
+- **Hover:** `background: #1A1A1A`, `color: #FF6B35`
+
 ### `<Button variant="ghost" />`
-- **Default:** Transparent background, `border: 1.5px solid #0A0A0A`, uppercase text
-- **Hover:** `background: #0A0A0A`, `color: #F2EDE4`
+- **Default:** Transparent background, `border: 2px solid #1A1A1A`, uppercase text
+- **Hover:** `background: #1A1A1A`, `color: #FFF8F0`
 
 ### `<Button variant="destructive" />`
-- **Default:** `background: #D62828`, `color: #F2EDE4`, uppercase text
-- **Hover:** `background: #0A0A0A`, `color: #F2EDE4`
+- **Default:** `background: #FF3366`, `color: #FFF8F0`, uppercase text
+- **Hover:** `background: #1A1A1A`, `color: #FF3366`
 
 ### `<Input />`
-- **Default:** `border: 1.5px solid #0A0A0A`, `border-radius: 0`, uppercase label above
-- **Focus:** `border-color: #FFE500`, `outline: 2px solid #FFE500` (offset 0)
-- **Error:** `border-color: #D62828`
+- **Default:** `border: 2px solid #1A1A1A`, `border-radius: 0`, uppercase label above
+- **Focus:** `border-color: #A8FF3E`, `outline: 2px solid #FF6B35` (offset 0)
+- **Error:** `border-color: #FF3366`
 
 ### `<Select />`
 - **Default:** Same border treatment as Input, custom dropdown arrow
@@ -330,8 +343,8 @@ Slides in from right (desktop) or bottom (mobile). Shows:
 
 ### `<Card />` (Item card)
 - **Default:** Bordered box, category label, photo, name, color swatch + brand, season tag
-- **Hover:** `border-color: #FFE500`, `box-shadow: 4px 4px 0 #FFE500`, `transform: translate(-2px, -2px)`
-- **Loading (skeleton):** Animated shimmer in `#E2DDD4`, same card shape
+- **Hover:** `border-color: #A8FF3E`, `box-shadow: 4px 4px 0 #A8FF3E`, `transform: translate(-2px, -2px)`
+- **Loading (skeleton):** Animated shimmer in `#F0EDE8`, same card shape
 
 ### `<Sheet />`
 - **Desktop:** Slides in from right, `480px` wide
@@ -343,24 +356,25 @@ Slides in from right (desktop) or bottom (mobile). Shows:
 - **Overlay:** `background: rgba(10, 10, 10, 0.4)`
 
 ### `<Badge />`
-- **Default:** `border: 1px solid #0A0A0A`, uppercase text, `Space Mono` 11px
-- **Category badge:** `background: #0A0A0A`, `color: #F2EDE4`
-- **Season badge:** `background: transparent`, `color: #0A0A0A`
+- **Default:** `border: 1.5px solid #1A1A1A`, uppercase text, `Space Mono` 11px
+- **Category badge:** `background: #1A1A1A`, `color: #FFF8F0`
+- **Season badge:** `background: transparent`, `color: #1A1A1A`
+- **Tangerine badge:** `background: #FF6B35`, `color: #FFF8F0` (used for "NEW" / seasonal highlights)
 
 ### `<Toast />`
-- **Success:** `border-left: 4px solid #FFE500`, "Tagged." message
-- **Error:** `border-left: 4px solid #D62828`, error message
+- **Success:** `border-left: 4px solid #A8FF3E`, "Tagged." message
+- **Error:** `border-left: 4px solid #FF3366`, error message
 - **Position:** Bottom-right (desktop), bottom-center (mobile)
 
 ### `<Sidebar />` (Desktop wardrobe nav)
-- Fixed left, `200px` wide, `border-right: 1.5px solid #0A0A0A`
+- Fixed left, `200px` wide, `border-right: 2px solid #1A1A1A`
 - Logo at top
 - Category list: uppercase, monospaced, item count in muted text
-- Active category: `background: #FFE500`, `color: #0A0A0A`
+- Active category: `background: #A8FF3E`, `color: #1A1A1A`
 - User avatar + logout at bottom
 
 ### `<TopNav />` (Mobile wardrobe nav)
-- Fixed top, `border-bottom: 1.5px solid #0A0A0A`
+- Fixed top, `border-bottom: 2px solid #1A1A1A`
 - Logo left, "+ ADD" + avatar right
 - Category tabs scroll horizontally below
 
@@ -370,7 +384,7 @@ Slides in from right (desktop) or bottom (mobile). Shows:
 
 ### Framework & Tooling
 - **Next.js 14** App Router with TypeScript
-- **Tailwind CSS v3** with shadcn/ui (initialized with brutalist overrides: `borderRadius: 0`, dark mode via `class`)
+- **Tailwind CSS v3** with shadcn/ui (initialized with brutalist overrides: `borderRadius: 0`, 2px borders, custom Sour Candy palette)
 - **Framer Motion** for page transitions + card animations
 - **Zustand** for UI state (modal open, active category filter)
 - **TanStack Query** for server state (wardrobe items, mutations)
