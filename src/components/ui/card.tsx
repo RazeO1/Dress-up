@@ -1,28 +1,65 @@
-"use client";
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
-import { type ReactNode } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-
-interface CardProps {
-  hover?: boolean;
-  children: ReactNode;
-  className?: string;
-  onClick?: () => void;
-}
-
-export function Card({ hover, className, children, ...props }: CardProps) {
+function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <motion.div
-      whileHover={hover ? { y: -2, scale: 1.01 } : undefined}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+    <div
       className={cn(
-        "bg-bg-elevated rounded-card shadow-sm overflow-hidden",
+        "border-2 border-[#1A1A1A] bg-card text-card-foreground",
         className
       )}
-      onClick={props.onClick}
-    >
-      {children}
-    </motion.div>
-  );
+      {...props}
+    />
+  )
+}
+
+function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("flex flex-col gap-1.5 p-4", className)}
+      {...props}
+    />
+  )
+}
+
+function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("font-display text-lg font-bold leading-snug", className)}
+      {...props}
+    />
+  )
+}
+
+function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
+
+function CardContent({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div className={cn("p-4 pt-0", className)} {...props} />
+  )
+}
+
+function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("flex items-center border-t-2 border-[#1A1A1A] p-4", className)}
+      {...props}
+    />
+  )
+}
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
 }

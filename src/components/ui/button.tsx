@@ -1,66 +1,59 @@
-"use client";
+"use client"
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
-import { type ReactNode, type MouseEventHandler } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-[#A8FF3E] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#A8FF3E] border-2 border-[#1A1A1A]",
+        secondary:
+          "bg-[#FF6B35] text-[#FFF8F0] hover:bg-[#1A1A1A] hover:text-[#FF6B35] border-2 border-[#1A1A1A]",
+        destructive:
+          "bg-[#FF3366] text-[#FFF8F0] hover:bg-[#1A1A1A] hover:text-[#FF3366] border-2 border-[#1A1A1A]",
+        outline:
+          "border-2 border-[#1A1A1A] bg-transparent hover:bg-[#1A1A1A] hover:text-[#FFF8F0]",
+        ghost:
+          "border-2 border-[#1A1A1A] bg-transparent hover:bg-[#F0EDE8] text-[#1A1A1A]",
+        link:
+          "text-[#1A1A1A] underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-5 py-2",
+        sm: "h-9 px-4",
+        lg: "h-11 px-6",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
 
-type Variant = "primary" | "secondary" | "ghost" | "danger";
-type Size = "sm" | "md" | "lg";
-
-interface ButtonProps {
-  variant?: Variant;
-  size?: Size;
-  fullWidth?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  disabled?: boolean;
-  type?: "button" | "submit" | "reset";
-  className?: string;
-  children: ReactNode;
-  ariaLabel?: string;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
-const variantStyles: Record<Variant, string> = {
-  primary: "bg-accent text-white hover:bg-accent-hover",
-  secondary: "bg-bg-secondary text-text-primary hover:bg-bg-tertiary",
-  ghost: "bg-transparent text-text-primary hover:bg-bg-secondary",
-  danger: "bg-red-500 text-white hover:bg-red-600",
-};
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
 
-const sizeStyles: Record<Size, string> = {
-  sm: "px-3 py-1.5 text-sm rounded-[10px]",
-  md: "px-5 py-3 text-base rounded-btn",
-  lg: "px-6 py-4 text-lg rounded-btn",
-};
-
-export function Button({
-  variant = "primary",
-  size = "md",
-  fullWidth,
-  className,
-  children,
-  onClick,
-  disabled,
-  type = "button",
-  ariaLabel,
-}: ButtonProps) {
-  return (
-    <motion.button
-      whileTap={{ scale: 0.96 }}
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      onClick={onClick}
-      disabled={disabled}
-      type={type}
-      aria-label={ariaLabel}
-      className={cn(
-        "font-semibold transition-colors select-none disabled:opacity-50 disabled:cursor-not-allowed",
-        variantStyles[variant],
-        sizeStyles[size],
-        fullWidth && "w-full",
-        className
-      )}
-    >
-      {children}
-    </motion.button>
-  );
-}
+export { Button, buttonVariants }
