@@ -94,3 +94,17 @@
 [data-state="closed"].animate-toast-out {
   animation: toast-out 200ms ease-in;
 }
+
+/* Loader tag-stamp animation */
+@keyframes tag-stamp {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.85);
+  }
+}
+
+.animate-tag-stamp {
+  animation: tag-stamp 300ms ease-in-out infinite;
+}

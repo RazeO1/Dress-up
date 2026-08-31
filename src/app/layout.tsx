@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Syne, IBM_Plex_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@/components/providers";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -38,7 +39,9 @@ export default function RootLayout({
       <body
         className={`${syne.variable} ${ibmPlexMono.variable} ${spaceMono.variable} font-body antialiased`}
       >
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
