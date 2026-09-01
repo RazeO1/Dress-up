@@ -12,16 +12,15 @@ import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase/client"
 
 const loginSchema = z.object({
-  email: z.string().email("Enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().min(1, "Email is required").email("Enter a valid email"),
+  password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
 })
 
-const signupSchema = loginSchema.extend({
+const signupSchema = z.object({
   full_name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().min(1, "Email is required").email("Enter a valid email"),
+  password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
 })
-
-type LoginForm = z.infer<typeof loginSchema>
-type SignupForm = z.infer<typeof signupSchema>
 
 interface AuthFormProps {
   mode: "login" | "signup"
@@ -38,11 +37,14 @@ export function AuthForm({ mode }: AuthFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm | SignupForm>({
+  } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: mode === "login"
+      ? { email: "", password: "" }
+      : { full_name: "", email: "", password: "" },
   })
 
-  async function onSubmit(data: LoginForm | SignupForm) {
+  async function onSubmit(data: { email: string; password: string; full_name?: string }) {
     setLoading(true)
     setError(null)
     const supabase = createClient()
@@ -59,12 +61,11 @@ export function AuthForm({ mode }: AuthFormProps) {
         router.refresh()
       }
     } else {
-      const signupData = data as SignupForm
       const { error } = await supabase.auth.signUp({
-        email: signupData.email,
-        password: signupData.password,
+        email: data.email,
+        password: data.password,
         options: {
-          data: { full_name: signupData.full_name },
+          data: { full_name: data.full_name ?? "" },
         },
       })
       if (error) {
@@ -100,8 +101,8 @@ export function AuthForm({ mode }: AuthFormProps) {
                 autoComplete="name"
                 {...register("full_name")}
               />
-              {"full_name" in errors && (
-                <p className="text-xs text-[#FF3366]">{String(errors.full_name?.message)}</p>
+              {errors.full_name && (
+                <p className="text-xs text-[#FF3366]">{String(errors.full_name.message)}</p>
               )}
             </div>
           )}
