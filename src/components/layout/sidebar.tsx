@@ -57,7 +57,7 @@ interface SidebarProps {
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname()
-  const { user } = useUser()
+  const { data: userData } = useUser()
 
   return (
     <>
@@ -121,11 +121,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         <div className="border-t-2 border-[#A8FF3E]/20 px-4 py-4">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-[#FF6B35] flex items-center justify-center text-[#FFF8F0] font-label text-xs font-bold">
-              {user?.email?.[0]?.toUpperCase() ?? "?"}
+              {userData?.user?.email?.[0]?.toUpperCase() ?? "?"}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs text-[#FFF8F0]/70 font-label truncate">
-                {user?.email}
+                {userData?.user?.email}
               </p>
             </div>
           </div>

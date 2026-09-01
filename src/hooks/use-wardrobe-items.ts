@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { createClient } from "@/lib/supabase/client"
-import type { WardrobeItem } from "@/types"
+import type { WardrobeItem, WardrobeItemInsert } from "@/types"
 
 export function useWardrobeItems(category?: string) {
   const supabase = createClient()
@@ -29,7 +29,7 @@ export function useCreateItem() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (item: Omit<WardrobeItem, "id" | "created_at" | "updated_at">) => {
+    mutationFn: async (item: WardrobeItemInsert) => {
       const { data, error } = await supabase
         .from("items")
         .insert([item])

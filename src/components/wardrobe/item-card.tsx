@@ -2,11 +2,11 @@
 
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import type { Item } from "@/types"
+import type { WardrobeItem } from "@/types"
 import { useWardrobeStore } from "@/stores/wardrobe"
 
 interface ItemCardProps {
-  item: Item
+  item: WardrobeItem
 }
 
 export function ItemCard({ item }: ItemCardProps) {
