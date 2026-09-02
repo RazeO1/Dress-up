@@ -44,16 +44,24 @@ export function AuthForm({ mode }: AuthFormProps) {
       : { full_name: "", email: "", password: "" },
   })
 
-  async function onSubmit(data: { email: string; password: string; full_name?: string }) {
+  async function onSubmit(data: z.input<typeof schema>) {
     setLoading(true)
     setError(null)
     const supabase = createClient()
 
+    // Defensive: guarantee string values — Zod ensures types, but Supabase
+    // rejects undefined even if the form thought it was present.
+    const email = String(data.email ?? "").trim()
+    const password = String(data.password ?? "")
+
+    if (!email || !password) {
+      setError("Email and password are required.")
+      setLoading(false)
+      return
+    }
+
     if (mode === "login") {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      })
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) {
         setError(error.message)
       } else {
@@ -61,12 +69,11 @@ export function AuthForm({ mode }: AuthFormProps) {
         router.refresh()
       }
     } else {
+      const full_name = String((data as Record<string, unknown>).full_name ?? "").trim()
       const { error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: { full_name: data.full_name ?? "" },
-        },
+        email,
+        password,
+        options: { data: { full_name } },
       })
       if (error) {
         setError(error.message)
@@ -90,7 +97,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           </h1>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form key={mode} onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {mode === "signup" && (
             <div className="space-y-1">
               <Label htmlFor="full_name">NAME</Label>
