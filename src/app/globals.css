@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Cinematic loader keyframes */
+@keyframes loader-word-reveal {
+  0% { opacity: 0; transform: translateY(20px) skewY(3deg); }
+  100% { opacity: 1; transform: translateY(0) skewY(0deg); }
+}
+
+@keyframes loader-clip-wipe {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes loader-fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
 @layer base {
   :root {
     /* Sour Candy Gen Z Palette — Brutalist */
@@ -38,6 +56,8 @@
     --sidebar-accent-foreground: #1A1A1A;
     --sidebar-border: #1A1A1A;
     --sidebar-ring: #A8FF3E;
+    --font-display: 'Syne', sans-serif;
+    --font-editorial: 'Playfair Display', serif;
   }
 
   * {
