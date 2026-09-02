@@ -14,7 +14,6 @@ export function GradientBg() {
           cAzimuthAngle={180}
           cPolarAngle={70}
           cDistance={2.5}
-          cDomain="left"
           uSpeed={0.4}
           uTime={0}
           uDensity={1.2}
