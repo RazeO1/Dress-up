@@ -12,6 +12,12 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        editorial: ["var(--font-editorial)", "Georgia", "serif"],
+        label: ["var(--font-label)", "monospace"],
+        body: ["var(--font-body)", "monospace"],
+        display: ["var(--font-display)", "sans-serif"],
+      },
     },
   },
   plugins: [],

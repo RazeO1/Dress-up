@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 /* Cinematic loader keyframes */
 @keyframes loader-word-reveal {
@@ -58,6 +58,8 @@
     --sidebar-ring: #A8FF3E;
     --font-display: 'Syne', sans-serif;
     --font-editorial: 'Playfair Display', serif;
+    --font-label: 'Space Mono', monospace;
+    --font-body: 'IBM Plex Mono', monospace;
   }
 
   * {
@@ -76,6 +78,34 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Hide OS cursor site-wide — custom cursor overlay replaces it */
+  html { cursor: none; }
+  @media (pointer: coarse) { html { cursor: auto; } }
+
+  /* Blend mode utility */
+  .mix-blend-difference { mix-blend-mode: difference; }
+
+  /* Marquee animation */
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee-scroll 20s linear infinite;
+  }
+
+  /* Kinematic letter drop animation */
+  @keyframes letter-drop {
+    0% { opacity: 0; transform: translateY(-30px) rotate(10deg); }
+    100% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  }
+
+  /* Counter wipe reveal */
+  @keyframes wipe-reveal {
+    0% { clip-path: inset(0 0 100% 0); }
+    100% { clip-path: inset(0 0 0% 0); }
   }
 }
 
