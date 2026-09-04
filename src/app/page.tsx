@@ -2,7 +2,6 @@
 
 import { Hero } from "@/components/landing/hero"
 import { Manifesto } from "@/components/landing/manifesto"
-import { OrderVideo } from "@/components/landing/order-video"
 import { HowItWorks } from "@/components/landing/how-it-works"
 import { Categories } from "@/components/landing/categories"
 import { CtaSection } from "@/components/landing/cta"
@@ -15,7 +14,6 @@ export default function HomePage() {
 
       <Manifesto />
       <HowItWorks />
-      <OrderVideo />
       <Categories />
       <CtaSection />
     </main>
