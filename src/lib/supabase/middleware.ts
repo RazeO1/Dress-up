@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
+const MIDDLEWARE_TIMEOUT = 3000
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -29,9 +31,22 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Use Promise.race with a timeout to prevent the request from hanging
+  const sessionPromise = supabase.auth.getUser()
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error("Supabase session timeout")), MIDDLEWARE_TIMEOUT)
+  )
+
+  // Race: either get the session or reject on timeout
+  let authResponse
+  try {
+    authResponse = await Promise.race([sessionPromise, timeoutPromise])
+  } catch {
+    // On timeout, proceed without session validation
+    return supabaseResponse
+  }
+
+  const { data: { user } = {} } = authResponse
 
   const { pathname } = request.nextUrl
 

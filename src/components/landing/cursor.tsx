@@ -56,7 +56,7 @@ export function Cursor() {
     <>
       {/* Dot */}
       <motion.div
-        className="pointer-events-none fixed left-0 top-0 z-[200] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFF8F0] mix-blend-difference"
+        className="pointer-events-none fixed left-0 top-0 z-[200] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFF8F0] mix-blend-difference"
         style={{ x: springX, y: springY }}
         aria-hidden
       />
@@ -65,8 +65,8 @@ export function Cursor() {
         className="pointer-events-none fixed left-0 top-0 z-[199] flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#1A1A1A] mix-blend-difference"
         style={{ x: springX, y: springY }}
         animate={{
-          width: isHovering ? 56 : 0,
-          height: isHovering ? 56 : 0,
+          width: isHovering ? 72 : 0,
+          height: isHovering ? 72 : 0,
           opacity: isHovering ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}

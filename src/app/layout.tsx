@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Syne, IBM_Plex_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { Cursor } from "@/components/landing/cursor";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
       >
         <Providers>
           {children}
+          <Cursor />
         </Providers>
       </body>
     </html>
