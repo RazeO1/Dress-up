@@ -1,0 +1,107 @@
+- generic [active] [ref=f1e1]:
+  - main [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - generic [ref=f1e4]: "00"
+      - generic [ref=f1e5]: TAG — Wardrobe, in order.
+      - generic [ref=f1e6]: LOADING / WARDROBE SYSTEMv.2026
+    - generic [ref=f1e9]:
+      - generic [ref=f1e12]:
+        - heading "TAG" [level=1] [ref=f1e13]
+        - paragraph [ref=f1e14]: Tag every piece.Know what you own.Wear more of it.
+        - generic [ref=f1e15]:
+          - link "START→" [ref=f1e16] [cursor=pointer]:
+            - /url: /signup
+          - link "LOG IN" [ref=f1e17] [cursor=pointer]:
+            - /url: /login
+      - generic [ref=f1e18]: SCROLL
+      - generic [ref=f1e20]:
+        - link "LOG IN" [ref=f1e21] [cursor=pointer]:
+          - /url: /login
+        - link "START" [ref=f1e22] [cursor=pointer]:
+          - /url: /signup
+    - generic [ref=f1e24]:
+      - paragraph [ref=f1e25]: 02 / MANIFESTO
+      - heading "Youownmorethanyouwear." [level=2] [ref=f1e26]:
+        - generic [ref=f1e27]: You
+        - generic [ref=f1e28]: own
+        - generic [ref=f1e29]: more
+        - generic [ref=f1e30]: than
+        - generic [ref=f1e31]: you
+        - generic [ref=f1e32]: wear.
+    - generic [ref=f1e33]:
+      - generic [ref=f1e34]:
+        - paragraph [ref=f1e35]: 02 / HOW IT WORKS
+        - heading "Three steps. Zero excuses." [level=2] [ref=f1e36]: Three steps.Zero excuses.
+      - generic [ref=f1e37]:
+        - generic [ref=f1e38]:
+          - paragraph [ref=f1e40]: 01 UPLOAD
+          - heading "Snap it." [level=3] [ref=f1e44]
+          - paragraph [ref=f1e45]: Strip the background.
+          - paragraph [ref=f1e46]: Drop a photo of any garment. Our auto-crop removes the background — your piece, ready to tag.
+        - generic [ref=f1e47]:
+          - paragraph [ref=f1e49]: 02 ORGANIZE
+          - heading "Sort by category." [level=3] [ref=f1e54]
+          - paragraph [ref=f1e55]: Tag once.
+          - paragraph [ref=f1e56]: Tops, bottoms, dresses, outerwear, shoes, accessories. One tap to sort, forever to find.
+        - generic [ref=f1e57]:
+          - paragraph [ref=f1e59]: 03 WEAR MORE
+          - heading "See what you forget." [level=3] [ref=f1e63]
+          - paragraph [ref=f1e64]: Wear it.
+          - paragraph [ref=f1e65]: TAG surfaces your forgotten pieces. Wear more of what you already own.
+    - generic [ref=f1e66]:
+      - generic [ref=f1e69]:
+        - paragraph [ref=f1e70]: 02b / WE SORTED IT
+        - heading "Now you know what you own." [level=2] [ref=f1e71]: Now you knowwhat you own.
+        - paragraph [ref=f1e72]: Every piece tagged.Every category sorted.Every outfit, tracked.
+      - generic [ref=f1e73]: WARDROBE SYSTEM — TAGS — ORGANIZE — WEAR MORE — WARDROBE SYSTEM — TAGS — ORGANIZE — WEAR MORE — WARDROBE SYSTEM — TAGS — ORGANIZE — WEAR MORE — WARDROBE SYSTEM — TAGS — ORGANIZE — WEAR MORE — WARDROBE SYSTEM — TAGS — ORGANIZE — WEAR MORE — WARDROBE SYSTEM — TAGS — ORGANIZE — WEAR MORE —
+    - generic [ref=f1e76]:
+      - generic [ref=f1e77]: WARDROBE
+      - paragraph [ref=f1e79]: 04 / CATEGORIES
+      - generic [ref=f1e80]:
+        - generic [ref=f1e81]:
+          - text: "01"
+          - heading "TOPS" [level=3] [ref=f1e82]
+          - paragraph [ref=f1e83]: Every essential layer.
+        - generic [ref=f1e87]:
+          - text: "02"
+          - heading "BOTTOMS" [level=3] [ref=f1e88]
+          - paragraph [ref=f1e89]: Pants, shorts, skirts.
+        - generic [ref=f1e93]:
+          - text: "03"
+          - heading "DRESSES" [level=3] [ref=f1e94]
+          - paragraph [ref=f1e95]: All shapes, all seasons.
+        - generic [ref=f1e99]:
+          - text: "04"
+          - heading "OUTERWEAR" [level=3] [ref=f1e100]
+          - paragraph [ref=f1e101]: Coats, jackets, blazers.
+        - generic [ref=f1e105]:
+          - text: "05"
+          - heading "SHOES" [level=3] [ref=f1e106]
+          - paragraph [ref=f1e107]: Every pair, in one place.
+        - generic [ref=f1e111]:
+          - text: "06"
+          - heading "ACCESSORIES" [level=3] [ref=f1e112]
+          - paragraph [ref=f1e113]: Bags, watches, jewelry.
+    - generic [ref=f1e117]:
+      - generic [ref=f1e118]:
+        - paragraph [ref=f1e119]: 07 / START TODAY
+        - heading [level=2] [ref=f1e120]:
+          - text: Your
+          - generic [ref=f1e121]:
+            - img [aria-hidden] [ref=f1e122]:
+              - generic [ref=f1e123]: wardrobe
+            - text: wardrobe
+          - text: is waiting.
+        - paragraph [ref=f1e124]: Tag your closet. See what you own. Wear more of it.Free, forever. No credit card required.
+        - link "START FREE→" [ref=f1e126] [cursor=pointer]:
+          - /url: /signup
+      - generic [ref=f1e128]:
+        - paragraph [ref=f1e129]: TAG
+        - paragraph [ref=f1e130]: © 2026 TAG — Wardrobe, in order.
+        - generic [ref=f1e131]:
+          - link "Log in" [ref=f1e132] [cursor=pointer]:
+            - /url: /login
+          - link "Sign up" [ref=f1e133] [cursor=pointer]:
+            - /url: /signup
+  - region "Notifications (F8)":
+    - list
