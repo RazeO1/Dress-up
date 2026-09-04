@@ -25,7 +25,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#FFF8F0]">
       {/* Sticky hero: zooms toward bottom, fades out — scroll distance lives in this container */}
       <div ref={containerRef} className="relative" style={{ height: "250vh" }}>
-        <div className="sticky top-0 z-10 h-screen overflow-hidden bg-[#1A1A1A]">
+        <div className="sticky top-0 z-10 h-screen">
           <motion.div
             className="h-full w-full"
             style={{
