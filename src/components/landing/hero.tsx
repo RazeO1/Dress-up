@@ -90,16 +90,16 @@ export function Hero() {
               </motion.h1>
 
               <motion.p
-                className="mt-6 max-w-xs font-body text-sm leading-relaxed text-[#C8C8B8]"
-                initial={{ opacity: 0, y: 30 }}
+                className="mt-8 max-w-md font-display text-[clamp(1.5rem,4vw,3rem)] leading-[1.15] font-bold tracking-tight"
+                initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: delay + 0.3, duration: 0.7, ease: "easeOut" }}
+                transition={{ delay: delay + 0.3, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               >
-                Tag every piece.
+                <span className="text-[#FFF8F0]">Tag every piece.</span>
                 <br />
-                Know what you own.
+                <span className="text-[#A8FF3E]">Know what you own.</span>
                 <br />
-                Wear more of it.
+                <span className="text-[#FFF8F0]">Wear more of it.</span>
               </motion.p>
 
               <motion.div
@@ -137,29 +137,6 @@ export function Hero() {
                 <span>SCROLL</span>
                 <span className="h-8 w-px bg-[#FFF8F0]" />
               </div>
-            </motion.div>
-
-            {/* Top-right: nav */}
-            <motion.div
-              className="absolute right-6 top-8 z-20 flex items-center gap-6 md:top-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: delay + 0.6 }}
-            >
-              <a
-                href="/login"
-                className="font-label text-[10px] uppercase tracking-[0.2em] text-[#FFF8F0] hover:text-[#A8FF3E] transition-colors"
-                data-cursor="LOG IN"
-              >
-                LOG IN
-              </a>
-              <a
-                href="/signup"
-                className="border-b border-[#FFF8F0] pb-0.5 font-label text-[10px] uppercase tracking-[0.2em] text-[#FFF8F0] hover:border-[#A8FF3E] hover:text-[#A8FF3E] transition-colors"
-                data-cursor="SIGN UP"
-              >
-                START
-              </a>
             </motion.div>
           </motion.section>
         </div>
