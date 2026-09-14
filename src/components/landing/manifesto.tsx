@@ -51,7 +51,7 @@ export function Manifesto({ inSlidePanel = false, scrollYProgress: externalProgr
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          02 / MANIFESTO
+          01 / VISION
         </motion.p>
 
         {/* Kinetic word reveal */}
@@ -62,23 +62,30 @@ export function Manifesto({ inSlidePanel = false, scrollYProgress: externalProgr
         }>
           {WORDS.map((word, wi) => {
             const chars = word.split("")
-            const wordStart = wi / WORDS.length
-            const wordEnd = (wi + 1) / WORDS.length
             return (
               <span key={wi} className="mr-[0.25em] inline-block">
                 {chars.map((char, ci) => {
-                  const charStart = wordStart + (ci / chars.length) * 0.05
-                  const charEnd = wordStart + ((ci + 1) / chars.length) * 0.05
-                  return (
-                    <KineticLetter
+                  let globalIndex = 0
+                  for (let i = 0; i < wi; i++) globalIndex += WORDS[i].length
+                  globalIndex += ci
+                  const totalGlobalChars = STATEMENT.replace(/ /g, "").length
+                  const charProgress = globalIndex / totalGlobalChars
+                  const enterStart = 0.1 + charProgress * 0.25
+                  const enterEnd = enterStart + 0.04
+                  return inSlidePanel ? (
+                    <PanelKineticLetter
+                      key={`${wi}-${ci}`}
+                      char={char}
+                      isInView={isInView}
+                      charDelay={charProgress * 0.6}
+                    />
+                  ) : (
+                    <SectionKineticLetter
                       key={`${wi}-${ci}`}
                       char={char}
                       scrollYProgress={scrollYProgress}
-                      charStart={charStart}
-                      charEnd={charEnd}
-                      totalChars={chars.length}
-                      inSlidePanel={inSlidePanel}
-                      isInView={isInView}
+                      enterStart={enterStart}
+                      enterEnd={enterEnd}
                     />
                   )
                 })}
@@ -91,56 +98,56 @@ export function Manifesto({ inSlidePanel = false, scrollYProgress: externalProgr
   )
 }
 
-function KineticLetter({
+function PanelKineticLetter({
+  char,
+  isInView,
+  charDelay,
+}: {
+  char: string
+  isInView: boolean
+  charDelay: number
+}) {
+  return (
+    <motion.span
+      className="mr-[0.05em] inline-block font-editorial"
+      initial={{ opacity: 0, y: 30, rotate: 12 }}
+      animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : {}}
+      transition={{
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1],
+        delay: charDelay,
+      }}
+    >
+      {char}
+    </motion.span>
+  )
+}
+
+function SectionKineticLetter({
   char,
   scrollYProgress,
-  charStart,
-  charEnd,
-  totalChars,
-  inSlidePanel,
-  isInView,
+  enterStart,
+  enterEnd,
 }: {
   char: string
   scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"]
-  charStart: number
-  charEnd: number
-  totalChars: number
-  inSlidePanel: boolean
-  isInView: boolean
+  enterStart: number
+  enterEnd: number
 }) {
-  if (inSlidePanel) {
-    // Panel mode: animate on viewport entry (scroll drives the panel, not the letters)
-    return (
-      <motion.span
-        className="mr-[0.05em] inline-block font-editorial"
-        initial={{ opacity: 0, y: 30, rotate: 12 }}
-        animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : {}}
-        transition={{
-          duration: 0.5,
-          ease: [0.16, 1, 0.3, 1],
-          delay: charStart * 0.8,
-        }}
-      >
-        {char}
-      </motion.span>
-    )
-  }
-
-  // Section mode: scroll-driven kinetic entrance
   const y = useTransform(
     scrollYProgress,
-    [Math.max(0, charStart - 0.12), charStart, charEnd, Math.min(1, charEnd + 0.08)],
-    [30, 0, 0, -10]
+    [Math.max(0, enterStart - 0.08), enterStart, enterEnd, 0.75, 0.95],
+    [30, 15, 0, 0, -20]
   )
   const opacity = useTransform(
     scrollYProgress,
-    [Math.max(0, charStart - 0.12), charStart, charEnd, Math.min(1, charEnd + 0.05)],
+    [Math.max(0, enterStart - 0.08), enterEnd, 0.75, 0.95],
     [0, 1, 1, 0.2]
   )
   const rotate = useTransform(
     scrollYProgress,
-    [Math.max(0, charStart - 0.1), charStart],
-    [12, 0]
+    [Math.max(0, enterStart - 0.08), enterEnd],
+    [10, 0]
   )
 
   return (

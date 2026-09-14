@@ -47,8 +47,9 @@ export function Hero() {
 
       {/* Pin container — owns the 300vh scroll distance for the scrub */}
       <div ref={pinRef} className="relative" style={{ height: "300vh" }}>
-        <div className="sticky top-0 h-screen">
+        <div className="sticky top-0 h-screen z-40 isolate">
           <motion.section
+            id="hero"
             className="relative h-screen w-full overflow-hidden bg-[#1A1A1A]"
             style={{ opacity: sceneOpacity }}
           >
@@ -59,7 +60,7 @@ export function Hero() {
             >
               <motion.video
                 ref={chaosVideoRef}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover pointer-events-none"
                 muted
                 loop
                 playsInline

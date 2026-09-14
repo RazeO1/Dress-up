@@ -12,7 +12,9 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#FFF8F0]">
       <LandingNav />
-      <Hero />
+      <div id="hero">
+        <Hero />
+      </div>
 
       <div id="manifesto">
         <Manifesto />

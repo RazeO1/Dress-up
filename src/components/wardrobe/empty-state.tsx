@@ -27,7 +27,7 @@ export function EmptyState() {
         NO TAGS YET
       </h2>
       <p className="text-sm text-[#8A8A7A] max-w-md mb-6">
-        Start building your wardrobe. Snap a photo of any garment, and we'll strip the background.
+        Start building your wardrobe. Snap a photo of any garment, and we&apos;ll strip the background.
       </p>
 
       <Button

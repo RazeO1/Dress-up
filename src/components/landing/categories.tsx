@@ -52,7 +52,7 @@ export function Categories() {
         {/* Section label */}
         <div className="absolute left-6 top-8 z-10 md:left-12">
           <p className="font-label text-[10px] uppercase tracking-[0.25em] text-[#8A8A7A]">
-            04 / CATEGORIES
+            04 / STYLES
           </p>
         </div>
 

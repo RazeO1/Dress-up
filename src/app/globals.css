@@ -83,6 +83,7 @@
   /* Hide OS cursor — only on devices with a real mouse (custom cursor renders there) */
   @media (hover: hover) and (pointer: fine) {
     html { cursor: none; }
+    input, textarea, select { cursor: text; }
   }
 
   /* Blend mode utility */

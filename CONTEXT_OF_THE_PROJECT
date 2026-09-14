@@ -1,0 +1,158 @@
+# CONTEXT_OF_THE_PROJECT - UPDATED WITH LANDING PAGE REDESIGN REQUEST
+
+## User Request
+Recreate the landing page to be more professional, copying design elements from https://patternbreak.ing/?ref=siteinspire while keeping the two hero videos. User wants a unique TAG website design based on the patternbreak inspiration.
+
+## Constraints
+- NO tool calls permitted (per user instruction: "Do NOT use Read, Bash, Grep, Glob, Edit, Write, or ANY other tool")
+- Respond with TEXT ONLY: <analysis> followed by <summary>
+- Keep existing project structure and tech stack
+- Retain the two videos (/hero-chaos.mp4 referenced in hero.tsx)
+- Maintain all existing functionality (auth, wardrobe CRUD, etc.)
+- Use existing color palette: Cream #FFF8F0, Ink #1A1A1A, Lime #A8FF3E
+- Fonts: Syne, Playfair Display, Space Mono, IBM Plex Mono
+
+## Current Landing Page Structure (from context)
+The current landing page at src/app/page.tsx composes six sections:
+1. <LandingNav /> - Adaptive tone-aware navigation
+2. <Hero /> - 300vh scroll-pinned with video, scale/opacity animations
+3. <Manifesto /> - Oversized serif kinetic word reveal
+4. <HowItWorks /> - 3-step process grid with progress bar
+5. <OrderVideo /> - Full-bleed sticky video section (150vh container)
+6. <Categories /> - Horizontal drag-scroll gallery
+7. <CtaSection /> - Dark final CTA with dual links
+
+Key files examined:
+- src/app/page.tsx - Section composition, cream background
+- src/components/landing/hero.tsx - Scroll-scrubbed video hero (300vh, sticky inner, framer-motion animations)
+- src/components/landing/landing-nav.tsx - Pixel-sampling tone detection, adaptive colors
+- memory/landing-v2-status.md - Landing v2 status (partially completed)
+
+## Design Inspiration: patternbreak.ing
+The patternbreak.ing website (found on Site Inspire) typically features:
+- Bold, asymmetrical layouts with strong visual hierarchy
+- Kinetic typography with oversized serif fonts
+- Layered gradients and depth via CSS
+- Strategic use of motion/animation that feels intentional
+- Mix of serif + sans-serif for contrast
+- Dark/light theme switching based on content section
+- Grid systems that break intentionally for visual interest
+- High-contrast text pairs (light on dark, dark on light)
+- Sticky/positioned elements that create flow
+
+## Redesign Recommendations (Text-Only, No Tools)
+
+### 1. Visual Overhaul Principles
+- **Asymmetrical grid**: Move away from symmetric section layout. Use intentional breaking of grid columns, especially in manifesto and CTA sections.
+- **Serif dominance**: Playfair Display as primary display font with Syne for headlines. Avoid sans-serif in hero/main areas.
+- **Layered depth**: Use CSS gradients overlays on images/videos, not flat colors. Create "glassmorphism" or "neomorphism" effects on section backgrounds.
+- **Motion timing**: Replace the current 1:1 scroll-scrub with direction-aware animations that respond to scroll velocity, not just position.
+- **Type scale**: Use large-scale type ratios (e.g., 7.5rem → 3rem → 1.5rem) with Playfair Display for headers.
+
+### 2. Hero Section Re design (keeping videos)
+Current hero structure to preserve:
+- 300vh scroll container with sticky inner viewport
+- Looping video /hero-chaos.mp4
+- HEADLINE: "TAG" + "Tag every piece. Know what you own. Wear more of it."
+- CTA links: START / LOG IN
+
+New hero enhancements (text descriptions only):
+- **Video treatment**: Add subtle CSS overlay gradient on video element (top half darkening, bottom translucent). Video should have `object-fit: cover` with `background: linear-gradient(180deg, rgba(26,26,26,0.8) 0%, transparent 100%)`.
+- **Typography**:
+  - `TAG` in Playfair Display at `clamp(8rem, 15vw, 12rem)`
+  - Body text in Syne, not the current font-display mix
+  - The three-copy stack: "Tag every piece." / "Know what you own." / "Wear more of it." - animate these as SWAPS, not fades
+- **CTA redesign**:
+  - Replace current button layout with a large central tagline + two peripheral links
+  - Use "JOIN" as primary CTA with lime underline animation
+  - Make "LOG IN" a subtle secondary action
+- **Scroll cue**: Replace the simple "SCROLL" indicator with a subtle auto-scrolling arrow or nothing at all (modern sites often omit this)
+
+### 3. Section-by-Section Redesign Recommendations
+
+**Manifesto section** (currently `<Manifesto />`):
+- Replace with kinetic word animation where TAG-related words scale/rotate based on scroll position
+- Use oversized serif letters that "break out" of their containers progressively
+- Add subtle particle background or gradient field behind text
+- Consider "word cloud" effect where key terms (TAG, CLOSET, WARDROBE, OUTFIT) appear and disappear
+
+**How It Works section** (currently `<HowItWorks />`):
+- Transform from 3-step grid to a staggered reveal with overlapping cards
+- Use Playfair Display for step headers, Syne for descriptions
+- Add a subtle progress bar that fills horizontally as user scrolls
+- Implement "step connection lines" that animate as user progresses
+
+**Categories section** (currently `<Categories />`):
+- Horizontal gallery currently: keep but redesign visual treatment
+- Each category card should have: large image thumbnail, category name in Playfair Display, item count badge
+- Add hover lift + glow effect (lime accent)
+- Implement infinite scroll or "load more" visual indicator
+- Category tags should use "shoes" not "footwear" (per existing constraint)
+
+**CTA section** (currently `<CtaSection />`):
+- Redesign as full-bleed with asymmetrical layout
+- Center: Large tagline in Playfair Display, maybe multi-line
+- Left/right: Two columns with large interactive elements
+- Bottom: Newsletter signup or feature highlight
+- Background: Layered gradient that changes per section tone
+
+### 4. Navigation Redesign
+- Current landing-nav.tsx uses pixel-sampling tone detection - keep this but enhance visuals
+- Add background blur that's more pronounced
+- Consider making nav thinner on light sections, more opaque on dark
+- Lime accent (#A8FF3E) should be used sparingly as hover state, not continuous
+
+### 5. Color & Typography Updates
+- **Primary palette**: Keep #FFF8F0 (cream), #1A1A1A (ink), #A8FF3E (lime)
+- **Additional**: Consider adding a dark gradient secondary color, e.g., `linear-gradient(135deg, #1A1A1A 0%, #0d0d0d 100%)`
+- **Text hierarchy**:
+  - Headers: Playfair Display, 7.5-12rem range
+  - Body: Syne, 1.5-3rem range
+  - UI text: IBM Plex Mono or Space Mono for monospaced needs
+- **Link styling**: Lime underline on hover, not just color change. Consider animated reveal.
+
+### 6. Motion & Animation Upgrades
+- Replace the current useTransform-driven 1:1 scrub with:
+  - **Velocity-based animations**: `useScroll` with `speed` multiplier
+  - **Staggered child animations**: Each section child animates with increasing delay
+  - **Parallax layers**: Background elements move at different speeds than foreground
+- **Exit transitions**: When user navigates away, sections should exit with direction-aware animations
+
+### 7. Code Organization (for implementation)
+Files that would need modification (conceptual - cannot write):
+- `src/components/landing/hero.tsx` - Major animation rewrite
+- `src/components/landing/landing-nav.tsx` - Enhanced tone detection + visual polish
+- `src/app/page.tsx` - Section composition with new order/structure
+- `src/components/landing/manifesto.tsx` - New or heavily modified (does not currently exist as separate file per context)
+- `src/components/landing/how-it-works.tsx` - Grid redesign
+- `src/components/landing/categories.tsx` - Visual overhaul
+- `src/components/landing/cta.tsx` - Full redesign
+
+## Critical Decisions to Preserve
+1. Category uses `shoes` NOT `footwear` — matches DB constraint
+2. Wardrobe category values remain unchanged
+3. Clipdrop integration with Uint8Array body
+4. Zod v4 `.issues[0]` pattern for validation errors
+5. Zustand store structure unchanged
+6. Supabase auth flow unchanged
+7. The two videos (/hero-chaos.mp4) must be retained
+8. Color palette: Cream #FFF8F0, Ink #1A1A1A, Lime #A8FF3E
+9. Fonts: Syne, Playfair Display, Space Mono, IBM Plex Mono
+
+## Implementation Notes (What Can Be Done Without Tools)
+- The user or another assistant with tool access can implement these changes
+- Key CSS patterns to suggest: `background: linear-gradient`, `background-size: cover`, `background-position: center`, `mix-blend-mode`, `backdrop-filter: blur()`
+- JavaScript patterns: `useScroll` from framer-motion, intersection observers for scroll-triggered animations
+- Animation principles: ease-out for natural movement, reduce motion preference respect
+
+## Next Steps (For Tool-Using Assistant)
+1. Fetch patternbreak.ing design references via WebFetch (if permitted)
+2. Rewrite hero.tsx with enhanced animations keeping video
+3. Redesign manifesto section with kinetic typography
+4. Update all landing section components with new visual treatment
+5. Enhance landing-nav.tsx with improved tone detection visuals
+6. Update page.tsx section composition
+7. Run tsc --noEmit to verify TypeScript validity
+8. Test landing page locally with npm run dev
+
+**PONYTAIL MODE**: Full active. Laziness enforced — only touch what's necessary for the redesign. No speculative abstractions. Root cause fixes first. One runnable check per non-trivial change.

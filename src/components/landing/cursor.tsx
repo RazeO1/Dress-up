@@ -6,6 +6,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion"
 export function Cursor() {
   const [isTouch, setIsTouch] = useState(true)
   const [isHovering, setIsHovering] = useState(false)
+  const [isInput, setIsInput] = useState(false)
   const [hoverLabel, setHoverLabel] = useState("VIEW")
 
   const x = useMotionValue(-100)
@@ -28,6 +29,12 @@ export function Cursor() {
     const handleOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       if (!target) return
+      if (target.closest("input, textarea, select")) {
+        setIsInput(true)
+        setIsHovering(false)
+        return
+      }
+      setIsInput(false)
       const cursorEl = target.closest("[data-cursor]") as HTMLElement | null
       const interactive = !cursorEl && target.closest("a, button, [role='button']")
       if (cursorEl) {
@@ -50,7 +57,7 @@ export function Cursor() {
     }
   }, [x, y])
 
-  if (isTouch) return null
+  if (isTouch || isInput) return null
 
   return (
     <>

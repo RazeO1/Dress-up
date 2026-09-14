@@ -1,12 +1,9 @@
 "use client"
 
-import { useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
 export function CtaSection() {
-  const [hoverWardrobe, setHoverWardrobe] = useState(false)
-
   return (
     <section className="relative bg-[#1A1A1A] py-28 md:py-40">
       {/* Film grain intensification on dark section */}
@@ -29,7 +26,7 @@ export function CtaSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          07 / START TODAY
+          05 / BEGIN
         </motion.p>
 
         {/* Headline */}
@@ -41,37 +38,7 @@ export function CtaSection() {
           transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           Your{" "}
-          <span
-            className="relative inline-block cursor-pointer"
-            onMouseEnter={() => setHoverWardrobe(true)}
-            onMouseLeave={() => setHoverWardrobe(false)}
-          >
-            {/* Outlined wordmark */}
-            <svg
-              viewBox="0 0 280 80"
-              className="absolute bottom-0 left-1/2 h-[0.7em] -translate-x-1/2 translate-y-full"
-              aria-hidden
-            >
-              <text
-                x="50%"
-                y="70%"
-                textAnchor="middle"
-                fontSize="50"
-                fontFamily="Georgia, serif"
-                fontWeight="700"
-                fill="none"
-                stroke="#A8FF3E"
-                strokeWidth="1.5"
-                strokeDasharray={hoverWardrobe ? "400" : "0"}
-                strokeDashoffset={hoverWardrobe ? "400" : "0"}
-                style={{
-                  transition: "stroke-dasharray 1.2s ease, stroke-dashoffset 1.2s ease",
-                  textTransform: "uppercase",
-                }}
-              >
-                wardrobe
-              </text>
-            </svg>
+          <span className="italic text-[#A8FF3E] hover:opacity-80 transition-opacity">
             wardrobe
           </span>{" "}
           <br />

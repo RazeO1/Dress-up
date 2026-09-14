@@ -57,7 +57,7 @@ export function HowItWorks() {
       {/* Section header */}
       <div className="mx-auto mb-16 max-w-7xl px-6">
         <p className="font-label text-[10px] uppercase tracking-[0.25em] text-[#8A8A7A]">
-          02 / HOW IT WORKS
+          02 / PROCESS
         </p>
         <h2 className="mt-3 font-editorial text-4xl font-bold text-[#1A1A1A] md:text-5xl">
           Three steps.
