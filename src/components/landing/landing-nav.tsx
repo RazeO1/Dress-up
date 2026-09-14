@@ -1,196 +1,161 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
+import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react"
 
-// Sections ordered top → bottom, with their dominant background tone.
-// "dark" sections render light text; "light" sections render dark text.
-const sections = [
-  { id: "hero",         tone: "dark"  }, // sticky pin before manifesto
-  { id: "manifesto",    tone: "light" },
-  { id: "how-it-works", tone: "light" },
-  { id: "order-video",  tone: "dark"  },
-  { id: "categories",   tone: "light" },
-  { id: "cta",          tone: "dark"  },
-] as const
-
-type Tone = (typeof sections)[number]["tone"]
+const NAV_LINKS = [
+  { id: "hero", label: "STORY" },
+  { id: "stats", label: "EVIDENCE" },
+  { id: "patterns", label: "TRAPS" },
+  { id: "transformation", label: "ORDER" },
+  { id: "system", label: "SYSTEM" },
+  { id: "categories", label: "CATEGORIES" },
+]
 
 export function LandingNav() {
-  const [activeTone, setActiveTone] = useState<Tone>("dark")
+  const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const navRef = useRef<HTMLDivElement>(null)
 
-  // Detect which section is currently under the navbar by sampling a strip
-  // of pixels just below it and reading the brightest/darkest average.
   useEffect(() => {
-    const sample = () => {
-      const x = Math.max(20, window.innerWidth / 2)
-      const y = 80 // just under the 64px navbar
-      const el = document.elementFromPoint(x, y)
-      if (!el) return
-
-      // Walk up from the sampled pixel to find a section wrapper with a known tone
-      let node: Element | null = el
-      while (node && node !== document.body) {
-        const id = (node as HTMLElement).id
-        if (id) {
-          const s = sections.find(s => s.id === id)
-          if (s) {
-            setActiveTone(s.tone)
-            return
-          }
-        }
-        node = node.parentElement
-      }
-
-      // Fallback: sample the computed background of the deepest opaque element
-      node = el
-      while (node && node !== document.body) {
-        const bg = (node as HTMLElement).style?.backgroundColor ||
-                   getComputedStyle(node as HTMLElement).backgroundColor
-        if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
-          const m = bg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/)
-          if (m) {
-            const [r, g, b] = [+m[1], +m[2], +m[3]]
-            const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-            setActiveTone(lum > 0.5 ? "light" : "dark")
-            return
-          }
-        }
-        node = node.parentElement
-      }
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
     }
-
-    sample()
-    window.addEventListener("scroll", sample, { passive: true })
-    window.addEventListener("resize", sample)
-    return () => {
-      window.removeEventListener("scroll", sample)
-      window.removeEventListener("resize", sample)
-    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const isDark = activeTone === "dark"
-
-  const sectionLinks = [
-    { id: "manifesto",    label: "VISION"  },
-    { id: "how-it-works", label: "PROCESS" },
-    { id: "order-video",  label: "ORDER"   },
-    { id: "categories",   label: "STYLES"  },
-    { id: "cta",          label: "BEGIN"   },
-  ]
-
-  const handleNavClick = (id: string) => {
+  const handleScrollTo = (id: string) => {
     setMobileMenuOpen(false)
-    const element = document.getElementById(id)
-    if (element) {
-      const navbarHeight = navRef.current?.offsetHeight ?? 80
-      const y = element.getBoundingClientRect().top + window.pageYOffset - navbarHeight
-      window.scrollTo({ top: y, behavior: "smooth" })
+    const el = document.getElementById(id)
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.pageYOffset - 80
+      window.scrollTo({ top, behavior: "smooth" })
     }
   }
 
-  // Colors for each tone
-  const sectionText = isDark ? "text-[#FFF8F0]/80" : "text-[#1A1A1A]/70"
-  const sectionHover = "hover:text-[#A8FF3E]"
-  const ctaText = isDark ? "text-[#8A8A7A]" : "text-[#1A1A1A]/50"
-  const ctaHover = isDark ? "hover:text-[#FFF8F0]" : "hover:text-[#1A1A1A]"
-  const joinText = "text-[#A8FF3E]"
-  const joinBorder = "border-[#A8FF3E]/30"
-  const joinBorderHover = "hover:border-[#A8FF3E]"
-  const hamburgerStroke = isDark ? "stroke-[#FFF8F0]" : "stroke-[#1A1A1A]"
-  const navBg = isDark ? "bg-transparent" : "bg-[#FFF8F0]/70 backdrop-blur-md"
-  const logoFilter = isDark ? "" : "brightness-0"
-
   return (
-    <nav
-      ref={navRef}
-      className={`fixed inset-x-0 z-50 transition-colors duration-500 ${navBg}`}
-    >
-      {/* Top row — always visible, always clickable */}
-      <div className="mx-auto px-6 flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center">
-          <img
-            src="/tag-logo.png"
-            alt="TAG"
-            className={`h-10 w-auto transition-all duration-500 ${logoFilter}`}
-          />
-        </Link>
-
-        {/* Desktop: Section links */}
-        <div className="hidden md:flex items-center gap-6">
-          {sectionLinks.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => handleNavClick(s.id)}
-              className={`font-label text-[10px] uppercase tracking-[0.3em] transition-colors duration-500 ${sectionText} ${sectionHover}`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Desktop: Login + Join CTAs */}
-        <div className="hidden md:flex items-center gap-4">
-          <a
-            href="/login"
-            className={`font-label text-[10px] uppercase tracking-[0.3em] transition-colors duration-500 ${ctaText} ${ctaHover}`}
-          >
-            LOG IN
-          </a>
-          <a
-            href="/signup"
-            className={`font-label text-[10px] uppercase tracking-[0.3em] border-b transition-colors duration-500 ${joinText} ${joinBorder} ${joinBorderHover}`}
-          >
-            JOIN
-          </a>
-        </div>
-
-        {/* Mobile Hamburger */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2"
-          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-        >
-          <svg className={`h-6 w-6 ${hamburgerStroke}`} viewBox="0 0 24 24" fill="none">
-            {mobileMenuOpen ? (
-              <path d="M6 6l12 12M6 18L18 6" strokeWidth="1.5" strokeLinecap="round" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" strokeWidth="1.5" strokeLinecap="round" />
-            )}
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile Dropdown Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute right-4 top-full mt-2 w-64 bg-[#1A1A1A]/95 backdrop-blur-sm border border-[#FFF8F0]/10 rounded-xl p-4 shadow-xl">
-          <div className="flex flex-col space-y-3">
-            {sectionLinks.map(s => (
-              <Link
-                key={s.id}
-                href={`#${s.id}`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleNavClick(s.id)
-                }}
-                className="font-label text-xs uppercase tracking-[0.2em] text-[#FFF8F0]/90 hover:text-[#A8FF3E] transition-colors py-1"
-              >
-                {s.label}
-              </Link>
-            ))}
-            <div className="border-t border-[#FFF8F0]/10 pt-3 flex flex-col space-y-2">
-              <a href="/login" className="font-label text-xs uppercase tracking-[0.2em] text-[#8A8A7A] hover:text-[#FFF8F0] transition-colors">
-                LOG IN
-              </a>
-              <Link href="/signup" className="font-label text-xs uppercase tracking-[0.2em] text-[#A8FF3E]">
-                START
-              </Link>
+    <>
+      <header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-[#08090C]/80 backdrop-blur-xl border-b border-white/10 py-3"
+            : "bg-transparent py-5"
+        }`}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+          {/* Brand Logo & System Status Pill */}
+          <div className="flex items-center gap-3">
+            <Link href="/" className="group flex items-center gap-2">
+              <div className="relative h-8 w-24 sm:w-28 flex items-center">
+                <Image
+                  src="/tag-logo.png"
+                  alt="TAG"
+                  width={112}
+                  height={32}
+                  priority
+                  className="h-8 w-auto object-contain brightness-0 invert transition-transform group-hover:scale-105"
+                />
+              </div>
+            </Link>
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-label text-white/60 tracking-wider uppercase">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#A8FF3E] animate-pulse" />
+              <span>WARDROBE OS</span>
             </div>
           </div>
+
+          {/* Desktop Nav Links */}
+          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] border border-white/10 rounded-full px-4 py-1.5 backdrop-blur-md">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => handleScrollTo(link.id)}
+                className="px-3 py-1 text-[11px] font-label uppercase tracking-widest text-white/70 hover:text-[#A8FF3E] transition-colors rounded-full hover:bg-white/5"
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Auth Action Buttons */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link
+              href="/login"
+              className="px-4 py-2 text-xs font-label uppercase tracking-widest text-white/80 hover:text-white transition-colors"
+            >
+              LOG IN
+            </Link>
+            <Link
+              href="/signup"
+              className="group relative inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#A8FF3E] text-[#08090C] font-label text-xs uppercase tracking-wider font-semibold transition-all hover:bg-[#bbfd5e] hover:shadow-[0_0_20px_rgba(168,255,62,0.35)]"
+            >
+              <span>GET STARTED</span>
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-full border border-white/10 bg-white/5 text-white/80 hover:text-white md:hidden"
+            aria-label="Toggle Navigation"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
-      )}
-    </nav>
+      </header>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-4 top-20 z-50 rounded-2xl bg-[#0D0F14] border border-white/10 p-6 shadow-2xl backdrop-blur-2xl md:hidden"
+          >
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <span className="font-label text-xs text-white/50 tracking-widest uppercase">
+                  NAVIGATION
+                </span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-label text-[#A8FF3E]">
+                  <Sparkles className="h-3 w-3" /> v2.6
+                </span>
+              </div>
+              <div className="flex flex-col gap-2">
+                {NAV_LINKS.map((link) => (
+                  <button
+                    key={link.id}
+                    onClick={() => handleScrollTo(link.id)}
+                    className="flex items-center justify-between py-2 text-left font-label text-sm uppercase tracking-wider text-white/80 hover:text-[#A8FF3E]"
+                  >
+                    <span>{link.label}</span>
+                    <ArrowUpRight className="h-3.5 w-3.5 text-white/40" />
+                  </button>
+                ))}
+              </div>
+              <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
+                <Link
+                  href="/login"
+                  className="w-full py-2.5 text-center font-label text-xs uppercase tracking-widest text-white/80 bg-white/5 rounded-xl border border-white/10"
+                >
+                  LOG IN
+                </Link>
+                <Link
+                  href="/signup"
+                  className="w-full py-2.5 text-center font-label text-xs uppercase tracking-widest font-semibold text-[#08090C] bg-[#A8FF3E] rounded-xl shadow-lg"
+                >
+                  START FREE
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
