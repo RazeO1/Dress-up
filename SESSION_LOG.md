@@ -1,0 +1,57 @@
+# Session Log
+
+## [2026-09-14 13:45] Comprehensive Fixes for Landing Page Tone Detection, Manifesto Kinetic Reveal, UI Collisions & Repository Clean-up
+- **Accomplishments**:
+  - **Resolved Next.js Build Failure & Dev Server Stale Chunks**:
+    - Diagnosed build failure `PageNotFoundError: Cannot find module for page: /_document` during static data collection caused by corrupted `.next` cache artifacts.
+    - Flushed `.next` and executed a clean build, successfully generating all 13 static/dynamic routes (`/`, `/_not-found`, `/login`, `/signup`, `/wardrobe`, `/settings`, and API route handlers).
+    - Terminated stale background Node.js processes holding port 3000 to eliminate `Cannot find module './948.js'` 500 errors.
+  - **Fixed Landing Navbar Adaptive Tone Detection on Hero Section**:
+    - Identified that `<Hero />` was rendered without a wrapping `<div id="hero">` in [`src/app/page.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/app/page.tsx), unlike all other sections.
+    - Because the navbar tone detector in [`src/components/landing/landing-nav.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/landing-nav.tsx) queries `document.elementFromPoint()` and traverses parents for section IDs, it failed to find `#hero` and defaulted to `<main>`'s background color (`#FFF8F0` cream).
+    - This erroneously placed the navbar in "light" mode: rendering an opaque cream bar over the dark video hero, forcing `brightness-0` on the TAG logo (turning it into a solid black blob), and displaying low-contrast dark links.
+    - Wrapped `<Hero />` in `<div id="hero">` and added `id="hero"` to the hero section in [`src/components/landing/hero.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/hero.tsx). The navbar now correctly enters "dark" mode: transparent background, crisp white links, and full-color logo over the video.
+  - **Fixed Premature Kinetic Letter Fade-Out in Manifesto Section**:
+    - Diagnosed that in [`src/components/landing/manifesto.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/manifesto.tsx), each character's opacity was mapped to `[0, 1, 1, 0.2]` within an ultra-short `0.05` scroll delta.
+    - As the user scrolled, earlier words faded down to 20% opacity before later words even entered, preventing the full statement *"You own more than you wear."* from ever being readable at once.
+    - Re-architected letter animations to calculate global string progress (`enterStart = 0.1 + charProgress * 0.25`), staggering letters in with kinetic drop and rotation (`y: 30 -> 0`, `rotate: 10 -> 0`) and holding them at 100% opacity throughout the active reading window (`0.75`). Letters only gently fade (`1 -> 0.2`) as the section exits (`0.95`).
+  - **Eliminated React Hook Conditional Call Violation**:
+    - Discovered an early return (`if (inSlidePanel) return ...`) in `KineticLetter` prior to `useTransform` hook invocations, violating `react-hooks/rules-of-hooks`.
+    - Refactored into two clean, dedicated components: `PanelKineticLetter` (CSS/spring-driven) and `SectionKineticLetter` (scroll-driven transforms), satisfying ESLint and React compiler rules.
+  - **Resolved CTA Headline SVG Text Collision**:
+    - In [`src/components/landing/cta.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/cta.tsx), an absolute SVG overlay (`stroke="#A8FF3E"`) anchored to `"wardrobe"` was translated downwards (`translate-y-full`), directly colliding with and obscuring the next line *"is waiting."*.
+    - Replaced the conflicting SVG with an elegant high-fashion serif italic accent (`<span className="italic text-[#A8FF3E]">wardrobe</span>`).
+  - **Synchronized Landing Section Numbering**:
+    - Standardized badge numbering to seamlessly match navbar link targets (`VISION`, `PROCESS`, `ORDER`, `STYLES`, `BEGIN`):
+      - `01 / VISION` in [`src/components/landing/manifesto.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/manifesto.tsx)
+      - `02 / PROCESS` in [`src/components/landing/how-it-works.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/how-it-works.tsx)
+      - `04 / STYLES` in [`src/components/landing/categories.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/categories.tsx)
+      - `05 / BEGIN` in [`src/components/landing/cta.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/cta.tsx)
+  - **Restored Native Text Cursor & Caret in Form Inputs**:
+    - `html { cursor: none; }` in [`src/app/globals.css`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/app/globals.css) suppressed the OS cursor globally, leaving text inputs on login, signup, and wardrobe drawers without an I-beam caret.
+    - Added `input, textarea, select { cursor: text; }` to [`src/app/globals.css`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/app/globals.css) and updated [`src/components/landing/cursor.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/cursor.tsx) with `isInput` detection to hide the dot overlay when interacting with form controls.
+  - **Configured ESLint & Fixed JSX Entities**:
+    - Added [`.eslintrc.json`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/.eslintrc.json) configured with `next/core-web-vitals` to prevent CLI prompt blocking.
+    - Escaped unescaped single quote in [`src/components/wardrobe/empty-state.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/wardrobe/empty-state.tsx) (`we&apos;ll`).
+  - **Directory Cleanup & Git Synchronization**:
+    - Deleted 20 loose test and debugging screenshots in the workspace root.
+    - Removed ephemeral `.playwright-mcp/` directory and added `.playwright-mcp` to [`.gitignore`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/.gitignore).
+    - Preserved essential public assets in [`public/`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/public) (`tag-logo.png`, `hero-chaos.mp4`, `hero-order.mp4`, `favicon.svg`).
+    - Staged, committed (`5b09eec`), and pushed all changes cleanly to `origin/main`.
+- **Verification & Testing**:
+  - `npx tsc --noEmit`: 0 TypeScript errors.
+  - `npm run lint`: 0 ESLint errors.
+  - `npm run build`: Production build succeeded with code 0 (13/13 static and dynamic routes compiled).
+  - Playwright visual QA: Verified hero transparency, manifesto kinetic entrance, section navigation jumps, category scroll track, and CTA rendering.
+- **Key Files Modified**:
+  - [`src/app/page.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/app/page.tsx): Wrapped Hero in `#hero` anchor.
+  - [`src/components/landing/hero.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/hero.tsx): Added `id="hero"` to hero motion section.
+  - [`src/components/landing/manifesto.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/manifesto.tsx): Refactored kinetic letters into separate components, adjusted opacity and hold timelines, updated label to `01 / VISION`.
+  - [`src/components/landing/how-it-works.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/how-it-works.tsx): Updated section badge to `02 / PROCESS`.
+  - [`src/components/landing/categories.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/categories.tsx): Updated section badge to `04 / STYLES`.
+  - [`src/components/landing/cta.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/cta.tsx): Removed colliding SVG text overlay, styled *"wardrobe"* in lime italic serif, updated badge to `05 / BEGIN`.
+  - [`src/components/landing/cursor.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/landing/cursor.tsx): Added `isInput` gate to suppress custom cursor overlay over form inputs.
+  - [`src/app/globals.css`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/app/globals.css): Restored `cursor: text` on `input, textarea, select`.
+  - [`src/components/wardrobe/empty-state.tsx`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/src/components/wardrobe/empty-state.tsx): Escaped apostrophe entity.
+  - [`.eslintrc.json`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/.eslintrc.json): Added Next.js ESLint configuration.
+  - [`.gitignore`](file:///C:/Users/hiiam/OneDrive/Desktop/Python/Dress%20Up/.gitignore): Added `.playwright-mcp` exclusion.
